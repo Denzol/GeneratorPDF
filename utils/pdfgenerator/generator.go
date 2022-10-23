@@ -1,28 +1,20 @@
-package certgenerator
+package pdfgenerator
 
 import (
+	"bytes"
 	"github.com/SebastiaanKlippert/go-wkhtmltopdf"
 )
 
-func GeneratePDF(r RequestPdf) (*wkhtmltopdf.PDFGenerator, error) {
+func GeneratePDF(buf *bytes.Buffer) (*bytes.Buffer, error) {
 
 	pdfg, err := wkhtmltopdf.NewPDFGenerator()
 	if err != nil {
 		return nil, err
 	}
 
-	pdfg.AddPage(wkhtmltopdf.NewPageReader(r.Buf))
+	pdfg.AddPage(wkhtmltopdf.NewPageReader(buf))
 
-	switch r.Format {
-	case "A3":
-		pdfg.PageSize.Set(wkhtmltopdf.PageSizeA3)
-	case "A4":
-		pdfg.PageSize.Set(wkhtmltopdf.PageSizeA4)
-	case "A5":
-		pdfg.PageSize.Set(wkhtmltopdf.PageSizeA5)
-	case "A7":
-		pdfg.PageSize.Set(wkhtmltopdf.PageSizeA7)
-	}
+	pdfg.PageSize.Set(wkhtmltopdf.PageSizeA4)
 
 	pdfg.Dpi.Set(300)
 
@@ -31,5 +23,5 @@ func GeneratePDF(r RequestPdf) (*wkhtmltopdf.PDFGenerator, error) {
 		return nil, err
 	}
 
-	return pdfg, nil
+	return pdfg.Buffer(), nil
 }
