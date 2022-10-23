@@ -1,13 +1,16 @@
 package certgenerator
 
 import (
-	"github.com/SebastiaanKlippert/go-wkhtmltopdf"
+	"bytes"
+	"io/ioutil"
+	"os"
 	"path/filepath"
 )
 
-func Save(pdfgen *wkhtmltopdf.PDFGenerator) error {
+func Save(buf *bytes.Buffer) error {
 	absPath, _ := filepath.Abs("../utils/storage/local/PDF/example.pdf")
-	err := pdfgen.WriteFile(absPath)
+	data, _ := ioutil.ReadAll(buf)
+	err := os.WriteFile(absPath, data, 0666)
 	if err != nil {
 		return err
 	}

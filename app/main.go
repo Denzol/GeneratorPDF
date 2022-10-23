@@ -1,7 +1,7 @@
 package main
 
 import (
-	"gus_certificates/app/certgenerator"
+	"GeneratorPDF/app/certgenerator"
 	"log"
 )
 
